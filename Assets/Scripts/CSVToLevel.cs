@@ -23,7 +23,7 @@ public class CSVToLevel : MonoBehaviour
     static int LOWER_GRID_OFFSET = 0;
     static int UPPER_GRID_OFFSET = 5;
 
-    private string LEVEL_DIRECTORY { get { return Application.dataPath + "/level/level.csv"; } }
+    private string LEVEL_DIRECTORY { get { return Application.dataPath + "/level/level"; } }
 
     private string[] items;
 
@@ -79,7 +79,7 @@ public class CSVToLevel : MonoBehaviour
     private GameObject folder;
 
 
-    public void LoadLevel()
+    public void LoadLevel(int level)
     {
         //Setting up files structure
         upperGrid = new GameObject("UpperGrid");
@@ -98,21 +98,29 @@ public class CSVToLevel : MonoBehaviour
         folder.transform.SetParent(lowerGrid.transform);
 
 
-        string levelText = System.IO.File.ReadAllText(LEVEL_DIRECTORY);
-        char[] commaSeparator = new char[] { ',', '\n' };
+        string levelText = System.IO.File.ReadAllText(LEVEL_DIRECTORY + level.ToString() + ".csv");
+        char[] commaSeparator = new char[] { ',', '\n', '\r' };
         items = levelText.Split(commaSeparator, System.StringSplitOptions.RemoveEmptyEntries);
 
         InterpLevel(items);
     }
 
+    public void destroyLevel()
+    {
+        Object.Destroy(GameObject.Find("UpperGrid"));
+        Object.Destroy(GameObject.Find("LowerGrid"));
+        Object.Destroy(GameObject.Find("Knight(Clone)"));
+        Object.Destroy(GameObject.Find("Ghost(Clone)"));
+    }
+
     public void InterpLevel(string[] levelText)
     {
-        /*
+        
         for(int i = 0; i < levelText.Length; i++)
         {
             Debug.Log(levelText[i]);
         }
-        */
+        
         GameObject tempObj = null;
 
 

@@ -48,14 +48,26 @@ public class GameManager : MonoBehaviour
     //Initializes the game for each level.
     void InitGame()
     {
-        //Call the SetupScene function of the BoardManager script, pass it current level number.
-        levelLoader.LoadLevel();
+        StartCoroutine( levelOperations());
+    }
 
-        
+    IEnumerator levelOperations()
+    {
+        //Call the SetupScene function of the BoardManager script, pass it current level number.
+        levelLoader.LoadLevel(1);
+
+
 
         //Spawn players
         spawnPlayer(knight, 1, LOWER_LEVEL_SPAWN_HEIGHT, 1);
         spawnPlayer(ghost, 0, UPPER_LEVEL_SPAWN_HEIGHT, 0);
+
+        yield return new WaitForSeconds(5);
+
+        levelLoader.destroyLevel();
+        levelLoader.LoadLevel(2);
+        spawnPlayer(knight, 1, LOWER_LEVEL_SPAWN_HEIGHT, 9);
+        spawnPlayer(ghost, 1, UPPER_LEVEL_SPAWN_HEIGHT, 5);
     }
 
 
