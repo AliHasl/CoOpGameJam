@@ -53,21 +53,26 @@ public class GameManager : MonoBehaviour
 
     IEnumerator levelOperations()
     {
+        //Spawn the goal and spawn tiles.
+        levelLoader.goalAndSpawnTiles();
+
         //Call the SetupScene function of the BoardManager script, pass it current level number.
-        levelLoader.LoadLevel(1);
+        levelLoader.transitionToLevel(1);
+
+        
 
 
 
         //Spawn players
-        spawnPlayer(knight, 1, LOWER_LEVEL_SPAWN_HEIGHT, 1);
-        spawnPlayer(ghost, 0, UPPER_LEVEL_SPAWN_HEIGHT, 0);
+        spawnPlayer(knight, -2, LOWER_LEVEL_SPAWN_HEIGHT, 5);
+        spawnPlayer(ghost, -2, UPPER_LEVEL_SPAWN_HEIGHT, 5);
 
-        yield return new WaitForSeconds(5);
+        yield return new WaitForSeconds(10);
 
-        levelLoader.destroyLevel();
-        levelLoader.LoadLevel(2);
-        spawnPlayer(knight, 1, LOWER_LEVEL_SPAWN_HEIGHT, 9);
-        spawnPlayer(ghost, 1, UPPER_LEVEL_SPAWN_HEIGHT, 5);
+        levelLoader.transitionToLevel(2);
+
+        //levelLoader.LoadLevel(2);
+
     }
 
 

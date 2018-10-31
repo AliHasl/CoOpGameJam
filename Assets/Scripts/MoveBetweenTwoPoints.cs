@@ -6,9 +6,9 @@ using UnityEngine;
 //Moves object between two points
 public class MoveBetweenTwoPoints : MonoBehaviour
 {
-    [SerializeField] private float moveSpeed;
-    [SerializeField] private GameObject pointA;
-    [SerializeField] private GameObject pointB;
+    [SerializeField] private float moveSpeed = 0.0f;
+    [SerializeField] private GameObject pointA = null;
+    [SerializeField] private GameObject pointB = null;
     [SerializeField] private bool reverseMove = false;
     [SerializeField] private Transform objectToUse;
     [SerializeField] private bool moveThisObject = false;
@@ -16,38 +16,29 @@ public class MoveBetweenTwoPoints : MonoBehaviour
     private float journeyLength;
     private float distCovered;
     private float fracJourney;
-    void Start()
+
+    public void setValues(float moveSpeed, GameObject pointA, GameObject pointB)
     {
+        this.moveSpeed = moveSpeed;
+        this.pointA = pointA;
+        this.pointB = pointB;
+        
+
         startTime = Time.time;
-        if (moveThisObject)
-        {
-            objectToUse = transform;
-        }
+
+        objectToUse = GetComponentInParent<Transform>();
+
         journeyLength = Vector3.Distance(pointA.transform.position, pointB.transform.position);
     }
+
     void Update()
     {
-        distCovered = (Time.time - startTime) * moveSpeed;
-        fracJourney = distCovered / journeyLength;
-        if (reverseMove)
+        if (moveSpeed != 0.0f)
         {
-            objectToUse.position = Vector3.Lerp(pointB.transform.position, pointA.transform.position, fracJourney);
-        }
-        else
-        {
-            objectToUse.position = Vector3.Lerp(pointA.transform.position, pointB.transform.position, fracJourney);
-        }
-        if ((Vector3.Distance(objectToUse.position, pointB.transform.position) == 0.0f || Vector3.Distance(objectToUse.position, pointA.transform.position) == 0.0f)) //Checks if the object has travelled to one of the points
-        {
-            if (reverseMove)
-            {
-                reverseMove = false;
-            }
-            else
-            {
-                reverseMove = true;
-            }
-            startTime = Time.time;
+            distCovered = (Time.time - startTime) * moveSpeed;
+            fracJourney = distCovered / journeyLength;
+
+            objectToUse.position = Vector3.Slerp(pointA.transform.position, pointB.transform.position, fracJourney);
         }
     }
 }

@@ -5,15 +5,11 @@ using System.Runtime;
 
 
 public class CSVToLevel : MonoBehaviour
-{
-
-
-
+{ 
 
     // Use this for initialization
     void Start()
     {
-
 
         //LoadLevel();
         //Debug.Log(items);
@@ -21,7 +17,7 @@ public class CSVToLevel : MonoBehaviour
     }
 
     static int LOWER_GRID_OFFSET = 0;
-    static int UPPER_GRID_OFFSET = 5;
+    static int UPPER_GRID_OFFSET = 7;
 
     private string LEVEL_DIRECTORY { get { return Application.dataPath + "/level/level"; } }
 
@@ -37,7 +33,7 @@ public class CSVToLevel : MonoBehaviour
 
         public WorldObject()
         {
-
+            
         }
     }
 
@@ -59,6 +55,8 @@ public class CSVToLevel : MonoBehaviour
     private const char centerTile = '1';
     private const char leftSideTile = 'l';
     private const char rightSideTile = 'r';
+
+    private const char goalTile = 'g';
 
     private const char north = 'N';
     private const char east = 'E';
@@ -82,8 +80,8 @@ public class CSVToLevel : MonoBehaviour
     public void LoadLevel(int level)
     {
         //Setting up files structure
-        upperGrid = new GameObject("UpperGrid");
-        lowerGrid = new GameObject("LowerGrid");
+        upperGrid = new GameObject("UpperGrid" + level);
+        lowerGrid = new GameObject("LowerGrid" + level);
         folder = new GameObject("tiles");
         folder.transform.SetParent(upperGrid.transform);
         folder = new GameObject("tiles");
@@ -104,34 +102,90 @@ public class CSVToLevel : MonoBehaviour
 
         InterpLevel(items);
     }
-
-    public void destroyLevel()
+    
+    public void transitionToLevel(int level)
     {
-        Object.Destroy(GameObject.Find("UpperGrid"));
-        Object.Destroy(GameObject.Find("LowerGrid"));
-        Object.Destroy(GameObject.Find("Knight(Clone)"));
-        Object.Destroy(GameObject.Find("Ghost(Clone)"));
+        GameObject upperGridNew1;
+        GameObject lowerGridNew1;
+
+        GameObject upperGridOld1;
+        GameObject lowerGridOld1;
+
+        GameObject upperGridNew2;
+        GameObject lowerGridNew2;
+
+        GameObject upperGridOld2;
+        GameObject lowerGridOld2;
+
+        LoadLevel(level);
+
+        if(level > 1)
+        {
+            upperGridOld1 = GameObject.Find("UpperGrid" + (level - 1));
+            upperGridNew1 = new GameObject();
+            upperGridNew1.transform.position = new Vector3(upperGridOld1.transform.position.x, upperGridOld1.transform.position.y + 15, upperGridOld1.transform.position.z);
+
+            lowerGridOld1 = GameObject.Find("LowerGrid" + (level - 1));
+            lowerGridNew1 = new GameObject();
+            lowerGridNew1.transform.position = new Vector3(lowerGridOld1.transform.position.x, lowerGridOld1.transform.position.y + 15, lowerGridOld1.transform.position.z);
+
+            upperGridOld1.AddComponent<MoveBetweenTwoPoints>();
+            upperGridOld1.GetComponent<MoveBetweenTwoPoints>().setValues(0.5f, upperGridOld1, upperGridNew1);
+            lowerGridOld1.AddComponent<MoveBetweenTwoPoints>();
+            lowerGridOld1.GetComponent<MoveBetweenTwoPoints>().setValues(0.5f, lowerGridOld1, lowerGridNew1);
+        }
+
+        upperGridOld2 = GameObject.Find("UpperGrid" + level);
+        upperGridNew2 = new GameObject();
+        upperGridNew2.transform.position = new Vector3(upperGridOld2.transform.position.x, upperGridOld2.transform.position.y + 15, upperGridOld2.transform.position.z);
+
+        lowerGridOld2 = GameObject.Find("LowerGrid" + level);
+        lowerGridNew2 = new GameObject();
+        lowerGridNew2.transform.position = new Vector3(lowerGridOld2.transform.position.x, lowerGridOld2.transform.position.y + 15, lowerGridOld2.transform.position.z);
+
+        upperGridOld2.AddComponent<MoveBetweenTwoPoints>();
+        upperGridOld2.GetComponent<MoveBetweenTwoPoints>().setValues(0.5f, upperGridOld2, upperGridNew2);
+        lowerGridOld2.AddComponent<MoveBetweenTwoPoints>();
+        lowerGridOld2.GetComponent<MoveBetweenTwoPoints>().setValues(0.5f, lowerGridOld2, lowerGridNew2);
+
+        if (level > 1)
+        {
+            waitBeforeDestroyLevel(level - 1);
+        }
+    }
+
+    IEnumerator waitBeforeDestroyLevel(int level)
+    {
+        yield return new WaitForSecondsRealtime(30);
+
+        destroyLevel(level);
+    }
+
+    public void destroyLevel(int a)
+    {
+        Object.Destroy(GameObject.Find("UpperGrid" + a));
+        Object.Destroy(GameObject.Find("LowerGrid" + a));
     }
 
     public void InterpLevel(string[] levelText)
     {
         
-        for(int i = 0; i < levelText.Length; i++)
+        /*for(int i = 0; i < levelText.Length; i++)
         {
             Debug.Log(levelText[i]);
-        }
+        }*/
         
         GameObject tempObj = null;
 
-
-
-        int y = UPPER_GRID_OFFSET;
+        int y = UPPER_GRID_OFFSET - 15;
         int z = 9;
         int x = 0;
 
         foreach (string a in levelText)
         {
             //Debug.Log("Checking " + a + " at " + x + ", " + y + ", " + z);
+
+            
 
             //Spawn tiles.
             if (tileRequiringItems.Contains(a.Substring(0, 1)))
@@ -201,7 +255,7 @@ public class CSVToLevel : MonoBehaviour
             }
             if (z == -1)
             {
-                y = LOWER_GRID_OFFSET;
+                y = LOWER_GRID_OFFSET - 15;
                 x = 0;
                 z = 9;
             }
@@ -458,5 +512,49 @@ public class CSVToLevel : MonoBehaviour
         }
 
         return new Quaternion(); ;
+    }
+
+    public void goalAndSpawnTiles()
+    {
+        char[] leftSide = { leftSideTile };
+        char[] corner = { cornerTile };
+        char[] rightSide = { rightSideTile };
+        char[] center = { centerTile };
+
+        GameObject tempObj = null;
+
+        tempObj = Object.Instantiate(getType(leftSide), new Vector3(-2, LOWER_GRID_OFFSET, 5), getTileRotation(leftSide));
+        tempObj.tag = "spawnTile";
+        tempObj = Object.Instantiate(getType(corner), new Vector3(-2, LOWER_GRID_OFFSET, 4), getTileRotation(corner));
+        tempObj.tag = "spawnTile";
+        tempObj = Object.Instantiate(getType(center), new Vector3(-1, LOWER_GRID_OFFSET, 5), getTileRotation(center));
+        tempObj.tag = "spawnTile";
+        tempObj = Object.Instantiate(getType(rightSide), new Vector3(-1, LOWER_GRID_OFFSET, 4), getTileRotation(rightSide));
+        tempObj.tag = "spawnTile";
+        tempObj = Object.Instantiate(getType(center), new Vector3(10, LOWER_GRID_OFFSET, 5), getTileRotation(center));
+        tempObj.tag = "goalTile";
+        tempObj = Object.Instantiate(getType(center), new Vector3(11, LOWER_GRID_OFFSET, 5), getTileRotation(center));
+        tempObj.tag = "goalTile";
+        tempObj = Object.Instantiate(getType(rightSide), new Vector3(10, LOWER_GRID_OFFSET, 4), getTileRotation(rightSide));
+        tempObj.tag = "goalTile";
+        tempObj = Object.Instantiate(getType(rightSide), new Vector3(11, LOWER_GRID_OFFSET, 4), getTileRotation(rightSide));
+        tempObj.tag = "goalTile";
+
+        tempObj = Object.Instantiate(getType(leftSide), new Vector3(-2, UPPER_GRID_OFFSET, 5), getTileRotation(leftSide));
+        tempObj.tag = "spawnTile";
+        tempObj = Object.Instantiate(getType(corner), new Vector3(-2, UPPER_GRID_OFFSET, 4), getTileRotation(corner));
+        tempObj.tag = "spawnTile";
+        tempObj = Object.Instantiate(getType(center), new Vector3(-1, UPPER_GRID_OFFSET, 5), getTileRotation(center));
+        tempObj.tag = "spawnTile";
+        tempObj = Object.Instantiate(getType(rightSide), new Vector3(-1, UPPER_GRID_OFFSET, 4), getTileRotation(rightSide));
+        tempObj.tag = "spawnTile";
+        tempObj = Object.Instantiate(getType(center), new Vector3(10, UPPER_GRID_OFFSET, 5), getTileRotation(center));
+        tempObj.tag = "goalTile";
+        tempObj = Object.Instantiate(getType(center), new Vector3(11, UPPER_GRID_OFFSET, 5), getTileRotation(center));
+        tempObj.tag = "goalTile";
+        tempObj = Object.Instantiate(getType(rightSide), new Vector3(10, UPPER_GRID_OFFSET, 4), getTileRotation(rightSide));
+        tempObj.tag = "goalTile";
+        tempObj = Object.Instantiate(getType(rightSide), new Vector3(11, UPPER_GRID_OFFSET, 4), getTileRotation(rightSide));
+        tempObj.tag = "goalTile";
     }
 }

@@ -8,6 +8,8 @@ TagManager:
   - wall
   - gameObject
   - pushableBlock
+  - spawnTile
+  - goalTile
   layers:
   - Default
   - TransparentFX
