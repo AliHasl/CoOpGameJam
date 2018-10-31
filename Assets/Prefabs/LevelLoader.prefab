@@ -1,0 +1,88 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1001 &100100000
+Prefab:
+  m_ObjectHideFlags: 1
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications: []
+    m_RemovedComponents: []
+  m_ParentPrefab: {fileID: 0}
+  m_RootGameObject: {fileID: 1186533524516704}
+  m_IsPrefabParent: 1
+--- !u!1 &1186533524516704
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 4139404516365474}
+  - component: {fileID: 114650523369688864}
+  m_Layer: 0
+  m_Name: LevelLoader
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4139404516365474
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1186533524516704}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 0, y: 0, z: 0}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &114650523369688864
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1186533524516704}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2797ef9db88786840a97955408f714bd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Tile: {fileID: 1228416531361374, guid: 45c2478676fd4844faa56ce1265b0352, type: 2}
+  objects:
+  - obj: {fileID: 1474678404756592, guid: a8b510714ef600742afb696e88e1e26a, type: 2}
+    extraY: 1
+  - obj: {fileID: 1235820034800144, guid: 96cb255d25f28d1418ed2d2e47fd5aa7, type: 2}
+    extraY: 1
+  - obj: {fileID: 1311568066756472, guid: 021794b7d87ef50438cbcc555c6e7c6b, type: 2}
+    extraY: 1
+  - obj: {fileID: 1611732239332620, guid: 40bedb51506057e4891548ec43b23c65, type: 2}
+    extraY: 0.55
+  - obj: {fileID: 1846255712774208, guid: 5b8af09046518334fa25abb406f572e0, type: 2}
+    extraY: 1
+  - obj: {fileID: 1480473338766610, guid: 13c24f19823935b43a926ebf34fbb79f, type: 2}
+    extraY: 1.45
+  - obj: {fileID: 1845620466661032, guid: 8e84ef5fcbd30a240948b4056065106f, type: 2}
+    extraY: 0.75
+  - obj: {fileID: 1864223537591622, guid: 45571a13258b16b4b8fe92e2bc2494a3, type: 2}
+    extraY: 0.25
+  - obj: {fileID: 1097557514634372, guid: a7b2858b7f19a1240b248cc5632d2c7f, type: 2}
+    extraY: 0.45
+  - obj: {fileID: 1543368999283358, guid: 3ce9203dd62dd274fab2b47393c04eed, type: 2}
+    extraY: 0.25
+  - obj: {fileID: 1809474934731366, guid: 3b2e69dc0cc5e1643b9c247e71ec7e57, type: 2}
+    extraY: 0
+  - obj: {fileID: 1136281844418470, guid: ab1d0f3f56b587347a2431f5dbbd4dc8, type: 2}
+    extraY: 0
+  - obj: {fileID: 1458587812705098, guid: 68a68347dbbd19142b497cb2fbe24a2f, type: 2}
+    extraY: 0
+  - obj: {fileID: 1179910165026552, guid: 4ee2610b42ea692418e93a0e03ed1da7, type: 2}
+    extraY: 0
+  wallObjects:
+  - obj: {fileID: 1150167855547632, guid: 4c1216a37edfcc048850785ab2ddd8d2, type: 2}
+    extraY: 1
+  - obj: {fileID: 1736256927808698, guid: 17d8542d36c7cf44986d34357022a78d, type: 2}
+    extraY: 1
