@@ -15,6 +15,8 @@ public class GameManager : MonoBehaviour
 
     private Camera mainCamera;
 
+    private int stepsForLevel;
+
     //Awake is always called before any Start functions
     void Awake()
     {
@@ -56,6 +58,7 @@ public class GameManager : MonoBehaviour
         //Spawn players
         spawnPlayer(knight, 1, LOWER_LEVEL_SPAWN_HEIGHT, 1);
         spawnPlayer(ghost, 0, UPPER_LEVEL_SPAWN_HEIGHT, 0);
+        stepsForLevel = 3;
     }
 
 
@@ -64,6 +67,11 @@ public class GameManager : MonoBehaviour
     {
         Instantiate(playerId, new Vector3(x, y, z), transform.rotation);
         
+    }
+
+    public int getStepsForLevel()
+    {
+        return stepsForLevel;
     }
 
     //Update is called every frame.

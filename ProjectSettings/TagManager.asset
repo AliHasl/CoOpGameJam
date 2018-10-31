@@ -8,6 +8,7 @@ TagManager:
   - wall
   - gameObject
   - pushableBlock
+  - Door1
   layers:
   - Default
   - TransparentFX
