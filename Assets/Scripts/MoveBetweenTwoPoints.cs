@@ -9,9 +9,7 @@ public class MoveBetweenTwoPoints : MonoBehaviour
     [SerializeField] private float moveSpeed = 0.0f;
     [SerializeField] private GameObject pointA = null;
     [SerializeField] private GameObject pointB = null;
-    [SerializeField] private bool reverseMove = false;
     [SerializeField] private Transform objectToUse;
-    [SerializeField] private bool moveThisObject = false;
     private float startTime;
     private float journeyLength;
     private float distCovered;
