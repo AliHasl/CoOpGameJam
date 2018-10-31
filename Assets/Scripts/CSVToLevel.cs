@@ -4,14 +4,16 @@ using UnityEngine;
 using System.Runtime;
 
 
-public class CSVToLevel : MonoBehaviour {
-    
+public class CSVToLevel : MonoBehaviour
+{
 
-    
+
+
 
     // Use this for initialization
-    void Start() {
-        
+    void Start()
+    {
+
 
         //LoadLevel();
         //Debug.Log(items);
@@ -38,11 +40,11 @@ public class CSVToLevel : MonoBehaviour {
 
         }
     }
- 
+
     public WorldObject[] objects = new WorldObject[14];
     public WorldObject[] wallObjects = new WorldObject[2];
 
-    
+
     private const char bomb = 'b';
     private const char boulder = 'o';
     private const char breakable = 'B';
@@ -75,7 +77,7 @@ public class CSVToLevel : MonoBehaviour {
     private GameObject upperGrid;
     private GameObject lowerGrid;
     private GameObject folder;
-    
+
 
     public void LoadLevel()
     {
@@ -99,7 +101,7 @@ public class CSVToLevel : MonoBehaviour {
         string levelText = System.IO.File.ReadAllText(LEVEL_DIRECTORY);
         char[] commaSeparator = new char[] { ',', '\n' };
         items = levelText.Split(commaSeparator, System.StringSplitOptions.RemoveEmptyEntries);
-        
+
         InterpLevel(items);
     }
 
@@ -113,7 +115,7 @@ public class CSVToLevel : MonoBehaviour {
         */
         GameObject tempObj = null;
 
-       
+
 
         int y = UPPER_GRID_OFFSET;
         int z = 9;
@@ -121,51 +123,28 @@ public class CSVToLevel : MonoBehaviour {
 
         foreach (string a in levelText)
         {
-            //Solid tile creation.
-
             //Debug.Log("Checking " + a + " at " + x + ", " + y + ", " + z);
 
-            
-
+            //Spawn tiles.
             if (tileRequiringItems.Contains(a.Substring(0, 1)))
             {
-                if ((x == 0 && z == 0) || a.EndsWith("c"))
-                {
-                    tempObj = Object.Instantiate(getType(new char[] { cornerTile }), new Vector3(x, y, z), Quaternion.Euler(-90, 0, 180));
-                    setGridParent(tempObj);
-                    tempObj.name = "Tile(" + x + "," + z + "," + y + ")";
-                }
-                else if (x == 0 || ( a.EndsWith("l")))
-                {
-                    tempObj = Object.Instantiate(getType(new char[] { leftSideTile }), new Vector3(x, y, z), Quaternion.Euler(-90, 0, 180));
-                    setGridParent(tempObj);
-                    tempObj.name = "Tile(" + x + "," + z + "," + y + ")";
-                }
-                else if (z == 0 || (a.EndsWith("r")))
-                {
-                    tempObj = Object.Instantiate(getType(new char[] { rightSideTile }), new Vector3(x, y, z), Quaternion.Euler(-90, 0, 180));
-                    setGridParent(tempObj);
-                    tempObj.name = "Tile(" + x + "," + z + "," + y + ")";
-                }
-                else
-                {
-                    tempObj = Object.Instantiate(getType(new char[] { centerTile }), new Vector3(x, y, z), Quaternion.Euler(-90, 0, 0));
-                    setGridParent(tempObj);
-                    tempObj.name = "Tile(" + x + "," + z + "," + y + ")";
-                }
-                //Debug.Log("Instantiating tile at " + x + ", " + y + ", " + z);
+                char[] tileType = { getTileType(x, z, a) };
+                tempObj = Object.Instantiate(getType(tileType), new Vector3(x, y, z), getTileRotation(tileType));
+                setGridParent(tempObj);
+                tempObj.name = "" + getTypeString(tileType) + "(" + x + "," + z + "," + y + ")";
             }
 
-            
+            //Spawn objects.
             if (itemsString.Contains(a.Substring(0, 1)))
             {
                 tempObj = Object.Instantiate(getType(a.ToCharArray()), new Vector3(x, y + getExtraY(a.ToCharArray()), z), new Quaternion());
                 setGridParent(tempObj);
-                tempObj.name = "Object(" + x + "," + z + "," + y + ")";                
-                
+                tempObj.name = "" + getTypeString(a.ToCharArray()) + "(" + x + "," + z + "," + y + ")";
+
                 //Debug.Log("Instantiating object at " + x + ", " + y + ", " + z);
             }
 
+            //Spawn walls.
             if (a.Length > 2)
             {
                 foreach (char c in a.Substring(1).ToCharArray())
@@ -196,7 +175,7 @@ public class CSVToLevel : MonoBehaviour {
 
                             Debug.Log("Instantiating wall at " + x + ", " + y + ", " + z);
 
-                            
+
                         }
 
                         break;
@@ -204,21 +183,21 @@ public class CSVToLevel : MonoBehaviour {
                 }
             }
 
-            
 
+            //Grid movement.
             x++;
-            if(x == 10)
+            if (x == 10)
             {
                 x = 0;
                 z--;
             }
-            if(z == -1)
+            if (z == -1)
             {
                 y = LOWER_GRID_OFFSET;
                 x = 0;
                 z = 9;
             }
- 
+
         }
     }
 
@@ -258,6 +237,49 @@ public class CSVToLevel : MonoBehaviour {
                 return wallObjects[0].obj;
             case wall:
                 return wallObjects[1].obj;
+        }
+
+        return null;
+    }
+
+
+    //Repetition functions
+    private string getTypeString(char[] a)
+    {
+        switch (a[0])
+        {
+            case bomb:
+                return "Bomb";
+            case boulder:
+                return "Boulder";
+            case breakable:
+                return "Breakable";
+            case button:
+                return "Button";
+            case lift:
+                return "Lift";
+            case pushable:
+                return "Pushable";
+            case switchItem:
+                return "SwitchItem";
+            case pitfall:
+                return "Pitfall";
+            case liftTop:
+                return "LiftTop";
+            case water:
+                return "Water";
+            case centerTile:
+                return "CenterTile";
+            case cornerTile:
+                return "CornerTile";
+            case leftSideTile:
+                return "LeftTile";
+            case rightSideTile:
+                return "RightTile";
+            case door:
+                return "Door";
+            case wall:
+                return "Wall";
         }
 
         return null;
@@ -391,5 +413,42 @@ public class CSVToLevel : MonoBehaviour {
         }
 
         return 0.0f;
+    }
+
+    private char getTileType(int x, int z, string a)
+    {
+        if ((x == 0 && z == 0) || a.EndsWith("c"))
+        {
+            return cornerTile;
+        }
+        else if (x == 0 || (a.EndsWith("l")))
+        {
+            return leftSideTile;
+        }
+        else if (z == 0 || (a.EndsWith("r")))
+        {
+            return rightSideTile;
+        }
+        else
+        {
+            return centerTile;
+        }
+    }
+
+    private Quaternion getTileRotation(char[] tileType)
+    {
+        switch (tileType[0])
+        {
+            case cornerTile:
+                return Quaternion.Euler(-90, 0, 180);
+            case leftSideTile:
+                return Quaternion.Euler(-90, 0, 180);
+            case rightSideTile:
+                return Quaternion.Euler(-90, 0, 180);
+            case centerTile:
+                return Quaternion.Euler(-90, 0, 0);
+        }
+
+        return new Quaternion(); ;
     }
 }
