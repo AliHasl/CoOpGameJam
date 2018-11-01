@@ -105,17 +105,17 @@ public class CSVToLevel : MonoBehaviour
     
     public void transitionToLevel(int level)
     {
-        GameObject upperGridNew1;
-        GameObject lowerGridNew1;
+        GameObject upperGridNew1 = null;
+        GameObject lowerGridNew1 = null;
 
-        GameObject upperGridOld1;
-        GameObject lowerGridOld1;
+        GameObject upperGridOld1 = null;
+        GameObject lowerGridOld1 = null;
 
-        GameObject upperGridNew2;
-        GameObject lowerGridNew2;
+        GameObject upperGridNew2 = null;
+        GameObject lowerGridNew2 = null;
 
-        GameObject upperGridOld2;
-        GameObject lowerGridOld2;
+        GameObject upperGridOld2 = null;
+        GameObject lowerGridOld2 = null;
 
         LoadLevel(level);
 
@@ -147,6 +147,8 @@ public class CSVToLevel : MonoBehaviour
         upperGridOld2.GetComponent<MoveBetweenTwoPoints>().setValues(0.5f, upperGridOld2, upperGridNew2);
         lowerGridOld2.AddComponent<MoveBetweenTwoPoints>();
         lowerGridOld2.GetComponent<MoveBetweenTwoPoints>().setValues(0.5f, lowerGridOld2, lowerGridNew2);
+
+       
 
         if (level > 1)
         {

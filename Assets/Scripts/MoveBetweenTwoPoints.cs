@@ -31,12 +31,14 @@ public class MoveBetweenTwoPoints : MonoBehaviour
 
     void Update()
     {
-        if (moveSpeed != 0.0f)
+        if (moveSpeed != 0.0f && objectToUse.position != pointB.transform.position)
         {
             distCovered = (Time.time - startTime) * moveSpeed;
             fracJourney = distCovered / journeyLength;
 
             objectToUse.position = Vector3.Slerp(pointA.transform.position, pointB.transform.position, fracJourney);
         }
+
+
     }
 }
