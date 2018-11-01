@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class GhostMovTileBased : MonoBehaviour
 {
-    
+
     private Rigidbody my_rigid_body;
     private Animator m_Anim;
     private Vector3 Detect_An_Input;
@@ -98,7 +98,6 @@ public class GhostMovTileBased : MonoBehaviour
         if (Vector3.Distance(gameObject.transform.position, pos) > 0.2f && m_grounded)
         {
             gameObject.transform.position = Vector3.Lerp(gameObject.transform.position, pos, 0.2f);
-            
         }
 
 
@@ -188,21 +187,41 @@ public class GhostMovTileBased : MonoBehaviour
             //Pushable block
             if (hit[i].collider.tag == "pushableBlock")
             {
-                Debug.Log("push it");
-                if (gameObject.transform.forward == Vector3.forward)
+
+                if (target == Vector3.forward)
                 {
+                    RaycastHit[] hitCount = Physics.RaycastAll(gameObject.transform.position, target, 2.0f);
+                    if (hitCount.Length > 1)
+                    {
+                        return false;
+                    }
                     hit[i].transform.SendMessage("MoveForward");
                 }
-                else if (gameObject.transform.forward == Vector3.back)
+                else if (target == Vector3.back)
                 {
+                    RaycastHit[] hitCount = Physics.RaycastAll(gameObject.transform.position, target, 2.0f);
+                    if (hitCount.Length > 1)
+                    {
+                        return false;
+                    }
                     hit[i].transform.SendMessage("MoveBack");
                 }
-                else if (gameObject.transform.forward == Vector3.left)
+                else if (target == Vector3.left)
                 {
+                    RaycastHit[] hitCount = Physics.RaycastAll(gameObject.transform.position, target, 2.0f);
+                    if (hitCount.Length > 1)
+                    {
+                        return false;
+                    }
                     hit[i].transform.SendMessage("MoveLeft");
                 }
-                else if (gameObject.transform.forward == Vector3.right)
+                else if (target == Vector3.right)
                 {
+                    RaycastHit[] hitCount = Physics.RaycastAll(gameObject.transform.position, target, 2.0f);
+                    if (hitCount.Length > 1)
+                    {
+                        return false;
+                    }
                     hit[i].transform.SendMessage("MoveRight");
                 }
 
@@ -214,6 +233,12 @@ public class GhostMovTileBased : MonoBehaviour
         return false;
     }
 
+
+    public int getSteps()
+    {
+        Debug.Log("accessed");
+        return stepCount;
+    }
 
 }
 
