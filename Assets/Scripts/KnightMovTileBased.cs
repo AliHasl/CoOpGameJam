@@ -27,6 +27,7 @@ public class KnightMovTileBased : MonoBehaviour {
     Quaternion m_quaternion;
 
     private Collider[] colliders;
+    private bool canMove = false;
 
     // Use this for initialization
     void Start() {
@@ -54,55 +55,59 @@ public class KnightMovTileBased : MonoBehaviour {
     void Update() {
 
 
-
-        Vector3 currentPos = gameObject.transform.position;
-        if (Input.GetKeyDown(KeyCode.W))
+        if (canMove)
         {
-            if (blockDetection(Vector3.forward)) {
-                transform.forward = Vector3.forward;
-                pos += Vector3.forward;
-                StartCoroutine(UpdateSteps());
-
-            }
-
-        }
-        else if (Input.GetKeyDown(KeyCode.S))
-        {
-            if (blockDetection(Vector3.back))
+            Vector3 currentPos = gameObject.transform.position;
+            if (Input.GetKeyDown(KeyCode.W))
             {
-                transform.forward = Vector3.back;
-                pos += Vector3.back;
-                StartCoroutine(UpdateSteps());
+                if (blockDetection(Vector3.forward))
+                {
+                    transform.forward = Vector3.forward;
+                    pos += Vector3.forward;
+                    StartCoroutine(UpdateSteps());
+
+                }
+
             }
-            //gameObject.transform.position = pos;
-        }
-        else if (Input.GetKeyDown(KeyCode.A))
-        {
-            if (blockDetection(Vector3.left))
+            else if (Input.GetKeyDown(KeyCode.S))
             {
-                transform.forward = Vector3.left;
-                pos += Vector3.left;
-                StartCoroutine(UpdateSteps());
+                if (blockDetection(Vector3.back))
+                {
+                    transform.forward = Vector3.back;
+                    pos += Vector3.back;
+                    StartCoroutine(UpdateSteps());
+                }
+                //gameObject.transform.position = pos;
             }
-        }
-        else if (Input.GetKeyDown(KeyCode.D))
-        {
-            if (blockDetection(Vector3.right))
+            else if (Input.GetKeyDown(KeyCode.A))
             {
-                transform.forward = Vector3.right;
-                pos += Vector3.right;
-                StartCoroutine(UpdateSteps());
+                if (blockDetection(Vector3.left))
+                {
+                    transform.forward = Vector3.left;
+                    pos += Vector3.left;
+                    StartCoroutine(UpdateSteps());
+                }
+            }
+            else if (Input.GetKeyDown(KeyCode.D))
+            {
+                if (blockDetection(Vector3.right))
+                {
+                    transform.forward = Vector3.right;
+                    pos += Vector3.right;
+                    StartCoroutine(UpdateSteps());
+                }
+
             }
 
-        }
 
 
 
-        //Lerp from one location to the next
+            //Lerp from one location to the next
 
-        if (Vector3.Distance(gameObject.transform.position, pos) > 0.2f && m_grounded)
-        {
-            gameObject.transform.position = Vector3.Lerp(gameObject.transform.position, pos, 0.2f);
+            if (Vector3.Distance(gameObject.transform.position, pos) > 0.2f && m_grounded)
+            {
+                gameObject.transform.position = Vector3.Lerp(gameObject.transform.position, pos, 0.2f);
+            }
         }
 
 
@@ -252,14 +257,14 @@ public class KnightMovTileBased : MonoBehaviour {
     private IEnumerator UpdateSteps()
     {
         yield return new WaitForSecondsRealtime(0.08f);
-        Debug.Log("Update steps");
+        
         colliders = Physics.OverlapSphere(m_GroundCheck.position, k_GroundedRadius);
         GameManager.instance.incrementSteps();
         foreach (Collider c in colliders)
         {
             if (c.gameObject.tag == "goalTile")
             {
-                Debug.Log("goalTile detected");
+                
                 GameManager.instance.setKnightOnGoalTile(true);
             }
         }
@@ -267,12 +272,12 @@ public class KnightMovTileBased : MonoBehaviour {
 
     public void disableMovement()
     {
-
+        canMove = false;
     }
 
     public void enableMovement()
     {
-
+        canMove = true;
     }
 
 }
