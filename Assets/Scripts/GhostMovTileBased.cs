@@ -240,6 +240,11 @@ public class GhostMovTileBased : MonoBehaviour
         return stepCount;
     }
 
+    public bool getGroundCheck()
+    {
+        return m_grounded;
+    }
+
     private void UpdateSteps()
     {
         
