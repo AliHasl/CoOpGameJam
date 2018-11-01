@@ -21,6 +21,7 @@ public class GameManager : MonoBehaviour
     private int steps = 0;
 
     private int[] maxSteps = { 30, 30, 30, 30 };
+    public static int NUM_LEVELS = 6;
 
 
     //Awake is always called before any Start functions
@@ -129,17 +130,38 @@ public class GameManager : MonoBehaviour
     public void setKnightOnGoalTile(bool b)
     {
         knightOnGoalTile = b;
+        goalsReached();
     }
 
     public void setGhostOnGoalTile(bool b)
     {
         ghostOnGoalTile = b;
+        goalsReached();
     }
 
-    private bool goalsReached()
+    private void goalsReached()
     {
-        //default
-        return false;
+        if(knightOnGoalTile && ghostOnGoalTile)
+        {
+            if(level != 6)
+            {
+                level++;
+                switchSpawnAndGoal();
+                disablePlayersMovement();
+                levelLoader.transitionToLevel(level);
+                StartCoroutine(waitBeforeEnableMovement());
+            }
+            else if (level == 7)
+            {
+                GameOver();
+            }
+        }
+    }
+
+    IEnumerator waitBeforeEnableMovement()
+    {
+        yield return new WaitForSecondsRealtime(10);
+        enablePlayersMovement();
     }
 
     private void switchSpawnAndGoal()

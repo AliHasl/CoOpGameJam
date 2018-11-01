@@ -26,6 +26,8 @@ public class GhostMovTileBased : MonoBehaviour
 
     Quaternion m_quaternion;
 
+    private Collider[] colliders;
+
     // Use this for initialization
     void Start()
     {
@@ -108,7 +110,7 @@ public class GhostMovTileBased : MonoBehaviour
     private void FixedUpdate()
     {
         m_grounded = false;
-        Collider[] colliders = Physics.OverlapSphere(m_GroundCheck.position, k_GroundedRadius);
+        colliders = Physics.OverlapSphere(m_GroundCheck.position, k_GroundedRadius);
 
         for (int i = 0; i < colliders.Length; i++)
         {
@@ -242,8 +244,16 @@ public class GhostMovTileBased : MonoBehaviour
 
     private void UpdateSteps()
     {
-        
-        //m_gameManager.GetComponent<GameManager>().IncrementSteps();
+
+        GameManager.instance.incrementSteps();
+        foreach (Collider c in colliders)
+        {
+            if (c.gameObject.tag == "goalTile")
+            {
+                GameManager.instance.setGhostOnGoalTile(true);
+            }
+        }
+                    
     }
 
     public void disableMovement()
