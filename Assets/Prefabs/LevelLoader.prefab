@@ -60,11 +60,11 @@ MonoBehaviour:
   - obj: {fileID: 1311568066756472, guid: 021794b7d87ef50438cbcc555c6e7c6b, type: 2}
     extraY: 1
   - obj: {fileID: 1611732239332620, guid: 40bedb51506057e4891548ec43b23c65, type: 2}
-    extraY: 0.55
+    extraY: -1
   - obj: {fileID: 1846255712774208, guid: 5b8af09046518334fa25abb406f572e0, type: 2}
     extraY: 1
-  - obj: {fileID: 1480473338766610, guid: 13c24f19823935b43a926ebf34fbb79f, type: 2}
-    extraY: 1.45
+  - obj: {fileID: 1023455608347148, guid: 04af2eb7e6fc32b4d9a19259a4bf0c1a, type: 2}
+    extraY: 0
   - obj: {fileID: 1845620466661032, guid: 8e84ef5fcbd30a240948b4056065106f, type: 2}
     extraY: 0.75
   - obj: {fileID: 1864223537591622, guid: 45571a13258b16b4b8fe92e2bc2494a3, type: 2}

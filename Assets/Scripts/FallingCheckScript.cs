@@ -24,6 +24,7 @@ public class FallingCheckScript : MonoBehaviour {
 	}
 	
 	// Update is called once per frame
+    
 	void Update () {
 
         if (gameObject.transform.name == "Knight(Clone)")
@@ -41,4 +42,5 @@ public class FallingCheckScript : MonoBehaviour {
             gameManager.fallingMsgGameOver();
         }
     }
+    
 }
