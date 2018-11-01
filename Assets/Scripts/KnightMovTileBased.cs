@@ -27,6 +27,8 @@ public class KnightMovTileBased : MonoBehaviour {
 
     private Collider[] colliders;
 
+    private bool movementEnabled;
+
     // Use this for initialization
     void Start() {
         my_rigid_body = GetComponent<Rigidbody>();
@@ -45,7 +47,7 @@ public class KnightMovTileBased : MonoBehaviour {
         //Initialize Stepcount to 0
         stepCount = 0;
 
-
+        movementEnabled = true;
 
     }
 
@@ -54,45 +56,48 @@ public class KnightMovTileBased : MonoBehaviour {
 
 
 
+        
         Vector3 currentPos = gameObject.transform.position;
-        if (Input.GetKeyDown(KeyCode.W))
-        {
-            if (blockDetection(Vector3.forward)) {
-                transform.forward = Vector3.forward;
-                pos += Vector3.forward;
-                UpdateSteps();
+        if (movementEnabled && m_grounded) {
+            if (Input.GetKeyDown(KeyCode.W))
+            {
+                if (blockDetection(Vector3.forward))
+                {
+                    transform.forward = Vector3.forward;
+                    pos += Vector3.forward;
+                    UpdateSteps();
+
+                }
 
             }
-
-        }
-        else if (Input.GetKeyDown(KeyCode.S))
-        {
-            if (blockDetection(Vector3.back))
+            else if (Input.GetKeyDown(KeyCode.S))
             {
-                transform.forward = Vector3.back;
-                pos += Vector3.back;
-                UpdateSteps();
+                if (blockDetection(Vector3.back))
+                {
+                    transform.forward = Vector3.back;
+                    pos += Vector3.back;
+                    UpdateSteps();
+                }
+                //gameObject.transform.position = pos;
             }
-            //gameObject.transform.position = pos;
-        }
-        else if (Input.GetKeyDown(KeyCode.A))
-        {
-            if (blockDetection(Vector3.left))
+            else if (Input.GetKeyDown(KeyCode.A))
             {
-                transform.forward = Vector3.left;
-                pos += Vector3.left;
-                UpdateSteps();
+                if (blockDetection(Vector3.left))
+                {
+                    transform.forward = Vector3.left;
+                    pos += Vector3.left;
+                    UpdateSteps();
+                }
             }
-        }
-        else if (Input.GetKeyDown(KeyCode.D))
-        {
-            if (blockDetection(Vector3.right))
+            else if (Input.GetKeyDown(KeyCode.D))
             {
-                transform.forward = Vector3.right;
-                pos += Vector3.right;
-                UpdateSteps();
+                if (blockDetection(Vector3.right))
+                {
+                    transform.forward = Vector3.right;
+                    pos += Vector3.right;
+                    UpdateSteps();
+                }
             }
-
         }
 
 
@@ -238,6 +243,12 @@ public class KnightMovTileBased : MonoBehaviour {
                 return true;
             }
 
+            //If hitting a switch
+            if (hit[i].collider.gameObject.tag == "switch")
+            {
+                hit[i].transform.SendMessage("flipSwitch");
+            }
+
 
         }
         return false;
@@ -262,12 +273,12 @@ public class KnightMovTileBased : MonoBehaviour {
 
     public void disableMovement()
     {
-
+        movementEnabled = false;
     }
 
     public void enableMovement()
     {
-
+        movementEnabled = true;
     }
 
 }
