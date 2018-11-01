@@ -59,7 +59,7 @@ public class GhostMovTileBased : MonoBehaviour
             {
                 transform.forward = Vector3.forward;
                 pos += Vector3.forward;
-                UpdateSteps();
+                StartCoroutine(UpdateSteps());
             }
 
         }
@@ -69,7 +69,7 @@ public class GhostMovTileBased : MonoBehaviour
             {
                 transform.forward = Vector3.back;
                 pos += Vector3.back;
-                UpdateSteps();
+                StartCoroutine(UpdateSteps());
             }
             //gameObject.transform.position = pos;
         }
@@ -79,7 +79,7 @@ public class GhostMovTileBased : MonoBehaviour
             {
                 transform.forward = Vector3.left;
                 pos += Vector3.left;
-                UpdateSteps();
+                StartCoroutine(UpdateSteps());
             }
         }
         else if (Input.GetKeyDown(KeyCode.RightArrow))
@@ -88,7 +88,7 @@ public class GhostMovTileBased : MonoBehaviour
             {
                 transform.forward = Vector3.right;
                 pos += Vector3.right;
-                UpdateSteps();
+                StartCoroutine( UpdateSteps());
             }
 
         }
@@ -247,9 +247,10 @@ public class GhostMovTileBased : MonoBehaviour
         return m_grounded;
     }
 
-    private void UpdateSteps()
+    private IEnumerator UpdateSteps()
     {
-
+        yield return new WaitForSecondsRealtime(0.08f);
+        colliders = Physics.OverlapSphere(m_GroundCheck.position, k_GroundedRadius);
         GameManager.instance.incrementSteps();
         foreach (Collider c in colliders)
         {
@@ -260,6 +261,8 @@ public class GhostMovTileBased : MonoBehaviour
         }
                     
     }
+
+
 
     public void disableMovement()
     {

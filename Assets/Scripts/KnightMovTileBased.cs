@@ -60,7 +60,7 @@ public class KnightMovTileBased : MonoBehaviour {
             if (blockDetection(Vector3.forward)) {
                 transform.forward = Vector3.forward;
                 pos += Vector3.forward;
-                UpdateSteps();
+                StartCoroutine(UpdateSteps());
 
             }
 
@@ -71,7 +71,7 @@ public class KnightMovTileBased : MonoBehaviour {
             {
                 transform.forward = Vector3.back;
                 pos += Vector3.back;
-                UpdateSteps();
+                StartCoroutine(UpdateSteps());
             }
             //gameObject.transform.position = pos;
         }
@@ -81,7 +81,7 @@ public class KnightMovTileBased : MonoBehaviour {
             {
                 transform.forward = Vector3.left;
                 pos += Vector3.left;
-                UpdateSteps();
+                StartCoroutine(UpdateSteps());
             }
         }
         else if (Input.GetKeyDown(KeyCode.D))
@@ -90,7 +90,7 @@ public class KnightMovTileBased : MonoBehaviour {
             {
                 transform.forward = Vector3.right;
                 pos += Vector3.right;
-                UpdateSteps();
+                StartCoroutine(UpdateSteps());
             }
 
         }
@@ -248,13 +248,17 @@ public class KnightMovTileBased : MonoBehaviour {
         return m_grounded;
     }
 
-    private void UpdateSteps()
+    private IEnumerator UpdateSteps()
     {
+        yield return new WaitForSecondsRealtime(0.08f);
+        Debug.Log("Update steps");
+        colliders = Physics.OverlapSphere(m_GroundCheck.position, k_GroundedRadius);
         GameManager.instance.incrementSteps();
         foreach (Collider c in colliders)
         {
             if (c.gameObject.tag == "goalTile")
             {
+                Debug.Log("goalTile detected");
                 GameManager.instance.setKnightOnGoalTile(true);
             }
         }
