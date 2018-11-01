@@ -24,6 +24,8 @@ public class GameManager : MonoBehaviour
     private int[] maxSteps = { 63, 66, 73, 99, 40, 40 };
     public static int NUM_LEVELS = 6;
 
+    private bool gameOver = false;
+
 
     //Awake is always called before any Start functions
     void Awake()
@@ -49,7 +51,7 @@ public class GameManager : MonoBehaviour
         //Call the InitGame function to initialize the first level 
         InitGame();
 
-        
+
     }
 
     const float LOWER_LEVEL_SPAWN_HEIGHT = 0.75f;
@@ -68,6 +70,14 @@ public class GameManager : MonoBehaviour
     {
         level = 1;
 
+        if (!gameOver)
+        {
+            StartCoroutine(waitBeforeEnableMovement());
+        }
+        gameOver = false;
+
+        Debug.Log("about to transition level");
+
         //Call the SetupScene function of the BoardManager script, pass it current level number.
         levelLoader.transitionToLevel(level);
         steps = 0;
@@ -77,12 +87,11 @@ public class GameManager : MonoBehaviour
         spawnPlayer(ghost, -2, UPPER_LEVEL_SPAWN_HEIGHT, 5);
     }
 
-
     //Spawns players to map
     void spawnPlayer(GameObject playerId, float x, float y, float z)
     {
         Instantiate(playerId, new Vector3(x, y, z), transform.rotation);
-        
+
     }
 
     public void incrementSteps()
@@ -111,38 +120,38 @@ public class GameManager : MonoBehaviour
 
     public void fallingMsgGameOver()
     {
-
+        GameOver();
     }
 
     public void setKnightOnGoalTile(bool b)
     {
-        Debug.Log("Knight on goal tile");
+
         knightOnGoalTile = b;
         goalsReached();
     }
 
     public void setGhostOnGoalTile(bool b)
     {
-        Debug.Log("Ghost on goal tile");
+
         ghostOnGoalTile = b;
         goalsReached();
     }
 
     private void goalsReached()
     {
-        if(knightOnGoalTile && ghostOnGoalTile)
+        if (knightOnGoalTile && ghostOnGoalTile)
         {
             Debug.Log("Knight and ghost on tile");
-            if(level != 6)
+            if (level != 6)
             {
-                
+
                 level++;
                 switchSpawnAndGoal();
                 disablePlayersMovement();
                 levelLoader.transitionToLevel(level);
                 StartCoroutine(waitBeforeEnableMovement());
             }
-            else if (level == 7)
+            else if (level == 6)
             {
                 GameOver();
             }
@@ -151,8 +160,9 @@ public class GameManager : MonoBehaviour
 
     IEnumerator waitBeforeEnableMovement()
     {
-        yield return new WaitForSecondsRealtime(10);
+        yield return new WaitForSecondsRealtime(3);
         enablePlayersMovement();
+        steps = 0;
     }
 
     private void switchSpawnAndGoal()
@@ -161,7 +171,7 @@ public class GameManager : MonoBehaviour
         Transform[] persistentObjects = GameObject.Find("PersistentTiles").GetComponentsInChildren<Transform>();
 
 
-        if (!swapped[level - 1])
+        if (gameOver)
         {
             foreach (Transform obj in persistentObjects)
             {
@@ -175,13 +185,27 @@ public class GameManager : MonoBehaviour
                 }
 
             }
+        }
+        else if(!swapped[level - 1])
+        {
+            foreach (Transform obj in persistentObjects)
+            {
+                if (obj.gameObject.tag == "goalTile")
+                {
+                    obj.gameObject.tag = "spawnTile";
+                }
+                else if (obj.gameObject.tag == "spawnTile")
+                {
+                    obj.gameObject.tag = "goalTile";
+                }
+            }
             swapped[level - 1] = true;
         }
 
         setGhostOnGoalTile(false);
         setKnightOnGoalTile(false);
-            
-        
+
+
     }
 
     private void disablePlayersMovement()
@@ -189,7 +213,7 @@ public class GameManager : MonoBehaviour
         GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
         foreach (GameObject obj in players)
         {
-            if(obj.name.Contains("Knight"))
+            if (obj.name.Contains("Knight"))
             {
                 obj.GetComponent<KnightMovTileBased>().disableMovement();
             }
@@ -222,19 +246,20 @@ public class GameManager : MonoBehaviour
         GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
         foreach (GameObject obj in players)
         {
-            Destroy(obj);
+            GameObject.Destroy(obj);
         }
-
-        spawnPlayer(knight, -2, LOWER_LEVEL_SPAWN_HEIGHT, 5);
-        spawnPlayer(ghost, -2, UPPER_LEVEL_SPAWN_HEIGHT, 5);
     }
 
     private void GameOver()
     {
-        resetGoalAndSpawn();
+        Debug.Log("GameOver");
+        gameOver = true;
+
+        levelLoader.destroyLevel(level);
+
         resetPlayers();
-        resetUI();
-        for(int x = 0; x < swapped.Length; x++)
+        resetGoalAndSpawn();
+        for (int x = 0; x < swapped.Length; x++)
         {
             swapped[x] = false;
         }
@@ -244,7 +269,7 @@ public class GameManager : MonoBehaviour
 
     private void resetGoalAndSpawn()
     {
-        if(level % 2 == 0 && swapped[level - 1])
+        if (level % 2 == 0 && swapped[level - 1])
         {
             switchSpawnAndGoal();
         }
@@ -254,14 +279,5 @@ public class GameManager : MonoBehaviour
     {
 
     }
-
-    
-
-    //Update is called every frame.
-    void Update()
-    {
-
-    }
-
 
 }

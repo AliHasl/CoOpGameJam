@@ -11,6 +11,7 @@ TagManager:
   - spawnTile
   - goalTile
   - Door1
+  - PlayerChar
   layers:
   - Default
   - TransparentFX
