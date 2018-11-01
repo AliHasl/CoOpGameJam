@@ -241,6 +241,10 @@ public class KnightMovTileBased : MonoBehaviour {
         return false;
     }
 
+    public bool getGroundCheck()
+    {
+        return m_grounded;
+    }
 
     private void UpdateSteps()
     {
