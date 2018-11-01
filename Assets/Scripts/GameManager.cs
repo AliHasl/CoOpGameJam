@@ -9,7 +9,7 @@ public class GameManager : MonoBehaviour
     public static GameManager instance = null;              //Static instance of GameManager which allows it to be accessed by any other script.
     private CSVToLevel levelLoader;                         //Store a reference to our BoardManager which will set up the level.
     private int level = 0;                                  //Current level number
-    private bool[] swapped = { false, false, false, false, false, false };
+    private bool[] swapped = { true, false, false, false, false, false };
 
     public GameObject knight;
     public GameObject ghost;
@@ -70,10 +70,9 @@ public class GameManager : MonoBehaviour
     {
         level = 1;
 
-        if (!gameOver)
-        {
-            StartCoroutine(waitBeforeEnableMovement());
-        }
+
+        StartCoroutine(waitBeforeEnableMovement());
+        
         gameOver = false;
 
         Debug.Log("about to transition level");
@@ -252,24 +251,34 @@ public class GameManager : MonoBehaviour
 
     private void GameOver()
     {
-        Debug.Log("GameOver");
-        gameOver = true;
+        /*Debug.Log("GameOver");
 
         levelLoader.destroyLevel(level);
 
-        resetPlayers();
+        
         resetGoalAndSpawn();
+        resetPlayers();
         for (int x = 0; x < swapped.Length; x++)
         {
             swapped[x] = false;
         }
+        swapped[0] = true;
 
-        levelOperations();
+        levelOperations();*/
+
+        foreach (GameObject obj in GameObject.FindObjectsOfType<GameObject>())
+        {
+            if (obj.name != "Main Camera")
+            {
+                GameObject.Destroy(obj);
+            }
+        }
+
     }
 
     private void resetGoalAndSpawn()
     {
-        if (level % 2 == 0 && swapped[level - 1])
+        if ((level % 2) == 0 && swapped[level - 1])
         {
             switchSpawnAndGoal();
         }
