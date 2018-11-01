@@ -2,38 +2,45 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MoveableBlockOld : MonoBehaviour {
+public class Bomb : MonoBehaviour
+{
 
     bool m_grounded;
     bool m_moveForward;
     Vector3 movePosition;
     private Transform m_GroundCheck;
     private float k_GroundedRadius;
-    
+
+    private SphereCollider blastZone;
 
     // Use this for initialization
-    void Start () {
+    void Start()
+    {
         m_grounded = true;
         m_moveForward = false;
         movePosition = gameObject.transform.position;
         m_GroundCheck = transform.Find("GroundCheck");
         k_GroundedRadius = 0.2f;
+
+        blastZone = gameObject.GetComponent<SphereCollider>();
+
     }
-	
-	// Update is called once per frame
-	void Update () {
 
-        
-         //movePosition = gameObject.transform.position += Vector3.forward;
-         if (Vector3.Distance(gameObject.transform.position, movePosition) > 0.2 && m_grounded)
-         {
-             gameObject.transform.position = Vector3.Lerp(gameObject.transform.position, movePosition,  0.2f);
-         }
-           
+    // Update is called once per frame
+    void Update()
+    {
 
-        
 
-	}
+        //movePosition = gameObject.transform.position += Vector3.forward;
+        if (Vector3.Distance(gameObject.transform.position, movePosition) > 0.2 && m_grounded)
+        {
+            gameObject.transform.position = Vector3.Lerp(gameObject.transform.position, movePosition, 0.2f);
+        }
+
+
+
+
+    }
 
     private void FixedUpdate()
     {
@@ -73,7 +80,7 @@ public class MoveableBlockOld : MonoBehaviour {
         Debug.Log("Can Move forward" + blockDetection(Vector3.forward));
         if (blockDetection(Vector3.forward))
         {
-            
+
             movePosition = gameObject.transform.position += Vector3.forward;
         }
         /*
@@ -87,7 +94,7 @@ public class MoveableBlockOld : MonoBehaviour {
 
         //transform.position += Vector3.forward;
     }
-    
+
     void MoveBack()
     {
         if (blockDetection(Vector3.back))
@@ -114,16 +121,18 @@ public class MoveableBlockOld : MonoBehaviour {
 
     private bool blockDetection(Vector3 target)
     {
-        RaycastHit[] hit = Physics.RaycastAll(gameObject.transform.position, target, 0.8f);//, transform.forward, 1.0f);
+        RaycastHit[] hit = Physics.RaycastAll(gameObject.transform.position, target, 1.0f);
 
         //No obstructions
         if (hit.Length == 0)
         {
+            Debug.Log("No Obstructions");
             return true;
         }
 
 
-        
+
+
         return false;
     }
 
@@ -131,7 +140,7 @@ public class MoveableBlockOld : MonoBehaviour {
     void HitByRay()
     {
         Debug.Log("I was hit by a ray");
-        transform.position += Vector3.forward; 
+        transform.position += Vector3.forward;
     }
 
 }
