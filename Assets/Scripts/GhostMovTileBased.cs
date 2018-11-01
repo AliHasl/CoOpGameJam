@@ -27,7 +27,7 @@ public class GhostMovTileBased : MonoBehaviour
     Quaternion m_quaternion;
 
     private Collider[] colliders;
-
+    private bool movementEnabled;
     // Use this for initialization
     void Start()
     {
@@ -44,6 +44,8 @@ public class GhostMovTileBased : MonoBehaviour
         //Initialize Stepcount to 0
         stepCount = 0;
 
+        movementEnabled = true;
+
     }
 
     // Update is called once per frame
@@ -53,44 +55,45 @@ public class GhostMovTileBased : MonoBehaviour
 
 
         Vector3 currentPos = gameObject.transform.position;
-        if (Input.GetKeyDown(KeyCode.UpArrow))
-        {
-            if (blockDetection(Vector3.forward))
+        if (movementEnabled && m_grounded) {
+            if (Input.GetKeyDown(KeyCode.UpArrow))
             {
-                transform.forward = Vector3.forward;
-                pos += Vector3.forward;
-                UpdateSteps();
-            }
+                if (blockDetection(Vector3.forward))
+                {
+                    transform.forward = Vector3.forward;
+                    pos += Vector3.forward;
+                    UpdateSteps();
+                }
 
-        }
-        else if (Input.GetKeyDown(KeyCode.DownArrow))
-        {
-            if (blockDetection(Vector3.back))
-            {
-                transform.forward = Vector3.back;
-                pos += Vector3.back;
-                UpdateSteps();
             }
-            //gameObject.transform.position = pos;
-        }
-        else if (Input.GetKeyDown(KeyCode.LeftArrow))
-        {
-            if (blockDetection(Vector3.left))
+            else if (Input.GetKeyDown(KeyCode.DownArrow))
             {
-                transform.forward = Vector3.left;
-                pos += Vector3.left;
-                UpdateSteps();
+                if (blockDetection(Vector3.back))
+                {
+                    transform.forward = Vector3.back;
+                    pos += Vector3.back;
+                    UpdateSteps();
+                }
+                //gameObject.transform.position = pos;
             }
-        }
-        else if (Input.GetKeyDown(KeyCode.RightArrow))
-        {
-            if (blockDetection(Vector3.right))
+            else if (Input.GetKeyDown(KeyCode.LeftArrow))
             {
-                transform.forward = Vector3.right;
-                pos += Vector3.right;
-                UpdateSteps();
+                if (blockDetection(Vector3.left))
+                {
+                    transform.forward = Vector3.left;
+                    pos += Vector3.left;
+                    UpdateSteps();
+                }
             }
-
+            else if (Input.GetKeyDown(KeyCode.RightArrow))
+            {
+                if (blockDetection(Vector3.right))
+                {
+                    transform.forward = Vector3.right;
+                    pos += Vector3.right;
+                    UpdateSteps();
+                }
+            }
         }
 
 
@@ -230,6 +233,12 @@ public class GhostMovTileBased : MonoBehaviour
                 return true;
             }
 
+            //If hitting a switch
+            if (hit[i].collider.gameObject.tag == "switch")
+            {
+                hit[i].transform.SendMessage("flipSwitch");
+            }
+
 
         }
         return false;
@@ -263,12 +272,12 @@ public class GhostMovTileBased : MonoBehaviour
 
     public void disableMovement()
     {
-
+        movementEnabled = false;
     }
 
     public void enableMovement()
     {
-
+        movementEnabled = true;
     }
 
 
