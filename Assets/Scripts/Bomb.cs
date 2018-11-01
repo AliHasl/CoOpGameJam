@@ -11,7 +11,7 @@ public class Bomb : MonoBehaviour
     private Transform m_GroundCheck;
     private float k_GroundedRadius;
 
-    private SphereCollider blastZone;
+    private BoxCollider blastZone;
 
     // Use this for initialization
     void Start()
@@ -22,14 +22,14 @@ public class Bomb : MonoBehaviour
         m_GroundCheck = transform.Find("GroundCheck");
         k_GroundedRadius = 0.2f;
 
-        blastZone = gameObject.GetComponent<SphereCollider>();
+        blastZone = gameObject.GetComponent<BoxCollider>();
 
     }
 
     // Update is called once per frame
     void Update()
     {
-
+        Debug.Log("Grounded = " + m_grounded);
 
         //movePosition = gameObject.transform.position += Vector3.forward;
         if (Vector3.Distance(gameObject.transform.position, movePosition) > 0.2 && m_grounded)
@@ -136,6 +136,13 @@ public class Bomb : MonoBehaviour
         return false;
     }
 
+
+    private void ignite()
+    {
+        new WaitForSeconds(3);
+        Debug.Log("BOOM!");
+        Destroy(gameObject);
+    }
 
     void HitByRay()
     {

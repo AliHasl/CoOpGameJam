@@ -65,7 +65,7 @@ MonoBehaviour:
   - obj: {fileID: 1846255712774208, guid: 5b8af09046518334fa25abb406f572e0, type: 2}
     extraY: 1
   - obj: {fileID: 1480473338766610, guid: 13c24f19823935b43a926ebf34fbb79f, type: 2}
-    extraY: 1.45
+    extraY: 1.8
   - obj: {fileID: 1845620466661032, guid: 8e84ef5fcbd30a240948b4056065106f, type: 2}
     extraY: 0.75
   - obj: {fileID: 1864223537591622, guid: 45571a13258b16b4b8fe92e2bc2494a3, type: 2}

@@ -203,6 +203,7 @@ public class CSVToLevel : MonoBehaviour
             {
                 tempObj = Object.Instantiate(getType(a.ToCharArray()), new Vector3(x, y + getExtraY(a.ToCharArray()), z), new Quaternion());
                 setGridParent(tempObj);
+                //tempObj.transform.position = new Vector3(x, tempObj.transform.position.y + getExtraY(a.ToCharArray()), z);
                 tempObj.name = "" + getTypeString(a.ToCharArray()) + "(" + x + "," + z + "," + y + ")";
 
                 //Debug.Log("Instantiating object at " + x + ", " + y + ", " + z);

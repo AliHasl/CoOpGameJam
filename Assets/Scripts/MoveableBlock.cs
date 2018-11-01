@@ -9,6 +9,9 @@ public class MoveableBlock : MonoBehaviour {
     Vector3 movePosition;
     private Transform m_GroundCheck;
     private float k_GroundedRadius;
+    private Rigidbody m_rigidBody;
+
+    bool transitionOver;
     
 
     // Use this for initialization
@@ -18,22 +21,33 @@ public class MoveableBlock : MonoBehaviour {
         movePosition = gameObject.transform.position;
         m_GroundCheck = transform.Find("GroundCheck");
         k_GroundedRadius = 0.2f;
+        m_rigidBody = GetComponent<Rigidbody>();
+        transitionOver = false;
     }
+
+    // Update is called once per frame
+    void Update()
+    {
+
+
+        //movePosition = gameObject.transform.position += Vector3.forward;
+
+
+
+        if (transitionOver) {
+        if (Vector3.Distance(gameObject.transform.position, movePosition) > 0.2 && m_grounded)
+        {
+            if (m_rigidBody.velocity.y == 0)
+            {
+                gameObject.transform.position = Vector3.Lerp(gameObject.transform.position, movePosition, 0.2f);
+
+            }
+        }
+    }
+    }
+        
+
 	
-	// Update is called once per frame
-	void Update () {
-
-        
-         //movePosition = gameObject.transform.position += Vector3.forward;
-         if (Vector3.Distance(gameObject.transform.position, movePosition) > 0.2 && m_grounded)
-         {
-             gameObject.transform.position = Vector3.Lerp(gameObject.transform.position, movePosition,  0.2f);
-         }
-           
-
-        
-
-	}
 
     private void FixedUpdate()
     {
@@ -45,15 +59,11 @@ public class MoveableBlock : MonoBehaviour {
             if (colliders[i].gameObject != gameObject)
             {
                 m_grounded = true;
-                if (colliders[i].gameObject.tag == "elevator")
-                {
-                    // new Vector3(0.0f, colliders[i].transform.position.y, 0.0f);
-                    gameObject.transform.position = gameObject.transform.position + new Vector3(0.0f, colliders[i].transform.position.y, 0.0f);
-                }
+                
 
                 //Check for location on grid
-                //playerPositionX = (colliders[i].name[5] - 48);
-                //playerPositionY = (colliders[1].name[7] - 48);
+                //int playerPositionX = (colliders[i].name[5] - 48);
+                //int playerPositionY = (colliders[1].name[7] - 48);
                 //Debug.Log("Player X = " + playerPositionX + "Player Y = " + playerPositionY);
                 //Debug.Log("Grounded " + colliders[i]);
             }
@@ -64,6 +74,7 @@ public class MoveableBlock : MonoBehaviour {
             //Debug.Log("Not on ground");
         }
 
+        Debug.Log("Grounded = " + m_grounded);
 
     }
 
@@ -134,6 +145,9 @@ public class MoveableBlock : MonoBehaviour {
     {
         Debug.Log("I was hit by a ray");
         transform.position += Vector3.forward; 
+    }
+
+    public void endTransition() {
     }
 
 }
