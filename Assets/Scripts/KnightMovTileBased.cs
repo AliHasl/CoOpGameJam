@@ -25,6 +25,8 @@ public class KnightMovTileBased : MonoBehaviour {
     GameManager m_gameManager;
     Quaternion m_quaternion;
 
+    private Collider[] colliders;
+
     // Use this for initialization
     void Start() {
         my_rigid_body = GetComponent<Rigidbody>();
@@ -110,7 +112,7 @@ public class KnightMovTileBased : MonoBehaviour {
     private void FixedUpdate()
     {
         m_grounded = false;
-        Collider[] colliders = Physics.OverlapSphere(m_GroundCheck.position, k_GroundedRadius);
+        colliders = Physics.OverlapSphere(m_GroundCheck.position, k_GroundedRadius);
 
         for (int i = 0; i < colliders.Length; i++)
         {
@@ -248,8 +250,14 @@ public class KnightMovTileBased : MonoBehaviour {
 
     private void UpdateSteps()
     {
-
-        m_gameManager.GetComponent<GameManager>().incrementSteps();
+        GameManager.instance.incrementSteps();
+        foreach (Collider c in colliders)
+        {
+            if (c.gameObject.tag == "goalTile")
+            {
+                GameManager.instance.setKnightOnGoalTile(true);
+            }
+        }
     }
 
     public void disableMovement()
