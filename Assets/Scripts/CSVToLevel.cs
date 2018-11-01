@@ -523,38 +523,58 @@ public class CSVToLevel : MonoBehaviour
 
         GameObject tempObj = null;
 
+        GameObject parent = Object.Instantiate(new GameObject());
+        parent.name = "PersistentTiles";
+
+
         tempObj = Object.Instantiate(getType(leftSide), new Vector3(-2, LOWER_GRID_OFFSET, 5), getTileRotation(leftSide));
         tempObj.tag = "spawnTile";
+        tempObj.transform.parent = parent.transform; 
         tempObj = Object.Instantiate(getType(corner), new Vector3(-2, LOWER_GRID_OFFSET, 4), getTileRotation(corner));
         tempObj.tag = "spawnTile";
+        tempObj.transform.parent = parent.transform;
         tempObj = Object.Instantiate(getType(center), new Vector3(-1, LOWER_GRID_OFFSET, 5), getTileRotation(center));
         tempObj.tag = "spawnTile";
+        tempObj.transform.parent = parent.transform;
         tempObj = Object.Instantiate(getType(rightSide), new Vector3(-1, LOWER_GRID_OFFSET, 4), getTileRotation(rightSide));
         tempObj.tag = "spawnTile";
+        tempObj.transform.parent = parent.transform;
         tempObj = Object.Instantiate(getType(center), new Vector3(10, LOWER_GRID_OFFSET, 5), getTileRotation(center));
         tempObj.tag = "goalTile";
+        tempObj.transform.parent = parent.transform;
         tempObj = Object.Instantiate(getType(center), new Vector3(11, LOWER_GRID_OFFSET, 5), getTileRotation(center));
         tempObj.tag = "goalTile";
+        tempObj.transform.parent = parent.transform;
         tempObj = Object.Instantiate(getType(rightSide), new Vector3(10, LOWER_GRID_OFFSET, 4), getTileRotation(rightSide));
         tempObj.tag = "goalTile";
+        tempObj.transform.parent = parent.transform;
         tempObj = Object.Instantiate(getType(rightSide), new Vector3(11, LOWER_GRID_OFFSET, 4), getTileRotation(rightSide));
         tempObj.tag = "goalTile";
+        tempObj.transform.parent = parent.transform;
 
         tempObj = Object.Instantiate(getType(leftSide), new Vector3(-2, UPPER_GRID_OFFSET, 5), getTileRotation(leftSide));
         tempObj.tag = "spawnTile";
+        tempObj.transform.parent = parent.transform;
         tempObj = Object.Instantiate(getType(corner), new Vector3(-2, UPPER_GRID_OFFSET, 4), getTileRotation(corner));
         tempObj.tag = "spawnTile";
+        tempObj.transform.parent = parent.transform;
         tempObj = Object.Instantiate(getType(center), new Vector3(-1, UPPER_GRID_OFFSET, 5), getTileRotation(center));
         tempObj.tag = "spawnTile";
+        tempObj.transform.parent = parent.transform;
         tempObj = Object.Instantiate(getType(rightSide), new Vector3(-1, UPPER_GRID_OFFSET, 4), getTileRotation(rightSide));
         tempObj.tag = "spawnTile";
+        tempObj.transform.parent = parent.transform;
         tempObj = Object.Instantiate(getType(center), new Vector3(10, UPPER_GRID_OFFSET, 5), getTileRotation(center));
         tempObj.tag = "goalTile";
+        tempObj.transform.parent = parent.transform;
         tempObj = Object.Instantiate(getType(center), new Vector3(11, UPPER_GRID_OFFSET, 5), getTileRotation(center));
         tempObj.tag = "goalTile";
+        tempObj.transform.parent = parent.transform;
         tempObj = Object.Instantiate(getType(rightSide), new Vector3(10, UPPER_GRID_OFFSET, 4), getTileRotation(rightSide));
         tempObj.tag = "goalTile";
+        tempObj.transform.parent = parent.transform;
         tempObj = Object.Instantiate(getType(rightSide), new Vector3(11, UPPER_GRID_OFFSET, 4), getTileRotation(rightSide));
         tempObj.tag = "goalTile";
+        tempObj.transform.parent = parent.transform;
     }
 }
