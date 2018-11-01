@@ -123,11 +123,11 @@ public class CSVToLevel : MonoBehaviour
         {
             upperGridOld1 = GameObject.Find("UpperGrid" + (level - 1));
             upperGridNew1 = new GameObject();
-            upperGridNew1.transform.position = new Vector3(upperGridOld1.transform.position.x, upperGridOld1.transform.position.y + 15, upperGridOld1.transform.position.z);
+            upperGridNew1.transform.position = new Vector3(upperGridOld1.transform.position.x, upperGridOld1.transform.position.y + 22, upperGridOld1.transform.position.z);
 
             lowerGridOld1 = GameObject.Find("LowerGrid" + (level - 1));
             lowerGridNew1 = new GameObject();
-            lowerGridNew1.transform.position = new Vector3(lowerGridOld1.transform.position.x, lowerGridOld1.transform.position.y + 15, lowerGridOld1.transform.position.z);
+            lowerGridNew1.transform.position = new Vector3(lowerGridOld1.transform.position.x, lowerGridOld1.transform.position.y + 22, lowerGridOld1.transform.position.z);
 
             upperGridOld1.AddComponent<MoveBetweenTwoPoints>();
             upperGridOld1.GetComponent<MoveBetweenTwoPoints>().setValues(0.5f, upperGridOld1, upperGridNew1);
@@ -150,14 +150,14 @@ public class CSVToLevel : MonoBehaviour
 
         if (level > 1)
         {
-            waitBeforeDestroyLevel(level - 1);
+            StartCoroutine( waitBeforeDestroyLevel(level - 1));
         }
     }
 
     IEnumerator waitBeforeDestroyLevel(int level)
     {
-        yield return new WaitForSecondsRealtime(30);
-
+        yield return new WaitForSecondsRealtime(5);
+        Debug.Log("Destroy" + level);
         destroyLevel(level);
     }
 

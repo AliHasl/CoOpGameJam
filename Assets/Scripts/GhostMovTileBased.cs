@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class GhostMovTileBased : MonoBehaviour
 {
-
+    
     private Rigidbody my_rigid_body;
     private Animator m_Anim;
     private Vector3 Detect_An_Input;
@@ -98,6 +98,7 @@ public class GhostMovTileBased : MonoBehaviour
         if (Vector3.Distance(gameObject.transform.position, pos) > 0.2f && m_grounded)
         {
             gameObject.transform.position = Vector3.Lerp(gameObject.transform.position, pos, 0.2f);
+            
         }
 
 
