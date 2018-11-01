@@ -2,38 +2,71 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MoveableBlock : MonoBehaviour {
+public class IceBlock : MonoBehaviour
+{
 
     bool m_grounded;
     bool m_moveForward;
     Vector3 movePosition;
     private Transform m_GroundCheck;
     private float k_GroundedRadius;
-    
 
+    //bools for movement direction
+    bool recentlyMovedForward;
+    bool recentlyMovedBack;
+    bool recentlyMovedLeft;
+    bool recentlyMovedRight;
     // Use this for initialization
-    void Start () {
+    void Start()
+    {
         m_grounded = true;
         m_moveForward = false;
         movePosition = gameObject.transform.position;
         m_GroundCheck = transform.Find("GroundCheck");
         k_GroundedRadius = 0.2f;
+        recentlyMovedForward = false;
+        recentlyMovedBack = false;
+        recentlyMovedLeft = false;
+        recentlyMovedRight = false;
     }
-	
-	// Update is called once per frame
-	void Update () {
 
+    // Update is called once per frame
+    void Update()
+    {
         
-         //movePosition = gameObject.transform.position += Vector3.forward;
-         if (Vector3.Distance(gameObject.transform.position, movePosition) > 0.2 && m_grounded)
-         {
-             gameObject.transform.position = Vector3.Lerp(gameObject.transform.position, movePosition,  0.2f);
-         }
-           
+        //movePosition = gameObject.transform.position += Vector3.forward;
+        if (Vector3.Distance(gameObject.transform.position, movePosition) > 0.2 && m_grounded)
+        {
+            gameObject.transform.position = Vector3.Lerp(gameObject.transform.position, movePosition, 0.2f);
+        }
 
-        
 
-	}
+        else if (recentlyMovedForward && Vector3.Distance(gameObject.transform.position, movePosition) < 0.2f)
+        {
+            recentlyMovedForward = false;
+            MoveForward();
+        }
+
+        else if (recentlyMovedBack && Vector3.Distance(gameObject.transform.position, movePosition) < 0.2f)
+        {
+            recentlyMovedBack = false;
+            MoveBack();
+        }
+
+        else if (recentlyMovedLeft && Vector3.Distance(gameObject.transform.position, movePosition) < 0.2f)
+        {
+            recentlyMovedLeft = false;
+            MoveLeft();
+        }
+
+       else if (recentlyMovedRight && Vector3.Distance(gameObject.transform.position, movePosition) < 0.2f)
+        {
+            recentlyMovedRight = false;
+            MoveRight();
+        }
+
+
+    }
 
     private void FixedUpdate()
     {
@@ -73,26 +106,21 @@ public class MoveableBlock : MonoBehaviour {
         Debug.Log("Can Move forward" + blockDetection(Vector3.forward));
         if (blockDetection(Vector3.forward))
         {
-            
+
             movePosition = gameObject.transform.position += Vector3.forward;
-        }
-        /*
-        movePosition = gameObject.transform.position += Vector3.forward;
-        if (Vector3.Distance(gameObject.transform.position, movePosition) > 0.0 && m_grounded)
-        {
-            gameObject.transform.position = Vector3.Lerp(gameObject.transform.position, movePosition, 0.2f);
-        }
-        */
+            recentlyMovedForward = true;
+      
 
-
-        //transform.position += Vector3.forward;
+        }
+        
     }
-    
+
     void MoveBack()
     {
         if (blockDetection(Vector3.back))
         {
             movePosition = gameObject.transform.position += Vector3.back;
+            recentlyMovedBack = true;
         }
     }
 
@@ -101,6 +129,7 @@ public class MoveableBlock : MonoBehaviour {
         if (blockDetection(Vector3.left))
         {
             movePosition = gameObject.transform.position += Vector3.left;
+            recentlyMovedLeft = true;
         }
     }
 
@@ -109,12 +138,13 @@ public class MoveableBlock : MonoBehaviour {
         if (blockDetection(Vector3.right))
         {
             movePosition = gameObject.transform.position += Vector3.right;
+            recentlyMovedRight = true;
         }
     }
 
     private bool blockDetection(Vector3 target)
     {
-        RaycastHit[] hit = Physics.RaycastAll(gameObject.transform.position, target, 1.0f);
+        RaycastHit[] hit = Physics.RaycastAll(gameObject.transform.position, target, 1.0f);//, transform.forward, 1.0f);
 
         //No obstructions
         if (hit.Length == 0)
@@ -125,7 +155,7 @@ public class MoveableBlock : MonoBehaviour {
 
 
 
-        
+
         return false;
     }
 
@@ -133,7 +163,7 @@ public class MoveableBlock : MonoBehaviour {
     void HitByRay()
     {
         Debug.Log("I was hit by a ray");
-        transform.position += Vector3.forward; 
+        transform.position += Vector3.forward;
     }
 
 }

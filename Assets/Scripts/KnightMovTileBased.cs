@@ -176,28 +176,54 @@ public class KnightMovTileBased : MonoBehaviour {
         {
             return true;
         }
-
+        //If multiple objects are piled up
+        
+        
+        
 
         for (int i = 0; i < hit.Length; i++)
         {
+
+            Debug.Log(hit[i].collider.gameObject.name);
             //Pushable block
-            if(hit[i].collider.tag == "pushableBlock")
+            if (hit[i].collider.tag == "pushableBlock")
             {
-                Debug.Log("push it");
-                if (gameObject.transform.forward == Vector3.forward)
+                
+                if (target == Vector3.forward)
                 {
+                    RaycastHit[] hitCount = Physics.RaycastAll(gameObject.transform.position, target, 2.0f);
+                    if(hitCount.Length > 1)
+                    {
+                        return false;
+                    }
                     hit[i].transform.SendMessage("MoveForward");
+                    break;
                 }
-                else if (gameObject.transform.forward == Vector3.back)
+                else if (target == Vector3.back)
                 {
+                    RaycastHit[] hitCount = Physics.RaycastAll(gameObject.transform.position, target, 2.0f);
+                    if (hitCount.Length > 1)
+                    {
+                        return false;
+                    }
                     hit[i].transform.SendMessage("MoveBack");
                 }
-                else if (gameObject.transform.forward == Vector3.left)
+                else if (target == Vector3.left)
                 {
+                    RaycastHit[] hitCount = Physics.RaycastAll(gameObject.transform.position, target, 2.0f);
+                    if (hitCount.Length > 1)
+                    {
+                        return false;
+                    }
                     hit[i].transform.SendMessage("MoveLeft");
                 }
-                else if(gameObject.transform.forward == Vector3.right)
+                else if(target == Vector3.right)
                 {
+                    RaycastHit[] hitCount = Physics.RaycastAll(gameObject.transform.position, target, 2.0f);
+                    if (hitCount.Length > 1)
+                    {
+                        return false;
+                    }
                     hit[i].transform.SendMessage("MoveRight");
                 }
 
@@ -209,6 +235,12 @@ public class KnightMovTileBased : MonoBehaviour {
         return false;
     }
 
+
+    public int getSteps()
+    {
+        
+        return stepCount;
+    }
 
 }
 

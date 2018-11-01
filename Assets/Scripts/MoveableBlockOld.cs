@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MoveableBlock : MonoBehaviour {
+public class MoveableBlockOld : MonoBehaviour {
 
     bool m_grounded;
     bool m_moveForward;
@@ -114,15 +114,13 @@ public class MoveableBlock : MonoBehaviour {
 
     private bool blockDetection(Vector3 target)
     {
-        RaycastHit[] hit = Physics.RaycastAll(gameObject.transform.position, target, 1.0f);
+        RaycastHit[] hit = Physics.RaycastAll(gameObject.transform.position, target, 0.8f);//, transform.forward, 1.0f);
 
         //No obstructions
         if (hit.Length == 0)
         {
-            Debug.Log("No Obstructions");
             return true;
         }
-
 
 
         
