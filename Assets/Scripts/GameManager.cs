@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 
 using System.Collections.Generic;       //Allows us to use Lists. 
@@ -262,5 +262,6 @@ public class GameManager : MonoBehaviour
     {
 
     }
+
 
 }
