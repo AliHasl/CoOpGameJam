@@ -18,7 +18,7 @@ public class MoveCountScript : MonoBehaviour {
         m_gameManager = GameObject.FindObjectOfType<GameManager>();
         
 
-       // totalStepsAllowed = m_gameManager.getStepsForLevel();
+        totalStepsAllowed = m_gameManager.getStepsAllowed(1);
         
         stepCountNo = GetComponent<Text>();
 
@@ -30,15 +30,15 @@ public class MoveCountScript : MonoBehaviour {
     {
         stepsTaken = 0;
 
-        //ABSTRACT METHOD
-        //totalStepsAllowed = m_gameManager.GetComponents<GameManager>().getStepsAllowed(level);
+
+        totalStepsAllowed = m_gameManager.getStepsAllowed(level);
     }
 	
 	
 	public void Update () {
 
-        //ABSTRACT CLASS
-        //stepsTaken = m_gameManager.GetComponent<GameManager>().StepsTaken();
+
+        stepsTaken = m_gameManager.getSteps();
 
         stepCountNo.text = stepsTaken.ToString() + " / " + totalStepsAllowed.ToString();
     }

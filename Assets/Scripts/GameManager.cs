@@ -13,6 +13,9 @@ public class GameManager : MonoBehaviour
     public GameObject knight;
     public GameObject ghost;
 
+    private bool knightOnGoalTile = false;
+    private bool ghostOnGoalTile = false;
+
     private Camera mainCamera;
 
     private int steps = 0;
@@ -113,10 +116,68 @@ public class GameManager : MonoBehaviour
         return steps;
     }
 
+    public int getStepsAllowed(int level)
+    {
+        return maxSteps[level - 1];
+    }
+
+    public void fallingMsgGameOver()
+    {
+
+    }
+
+    public void setKnightOnGoalTile(bool b)
+    {
+        knightOnGoalTile = b;
+    }
+
+    public void setGhostOnGoalTile(bool b)
+    {
+        ghostOnGoalTile = b;
+    }
+
+    private bool goalsReached()
+    {
+        //default
+        return false;
+    }
+
+    private void switchSpawnAndGoal()
+    {
+
+    }
+
+    private void disablePlayersMovement()
+    {
+
+    }
+
+    private void enablePlayersMovement()
+    {
+
+    }
+
+    private void resetPlayers()
+    {
+
+    }
+
     private void GameOver()
     {
 
     }
+
+    private void resetGoalAndSpawn()
+    {
+
+    }
+
+    private void resetUI()
+    {
+
+    }
+
+    
 
     //Update is called every frame.
     void Update()
