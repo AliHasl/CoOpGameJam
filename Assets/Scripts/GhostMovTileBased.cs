@@ -242,9 +242,20 @@ public class GhostMovTileBased : MonoBehaviour
 
     private void UpdateSteps()
     {
-        //ABSTRACT
+        
         //m_gameManager.GetComponent<GameManager>().IncrementSteps();
     }
+
+    public void disableMovement()
+    {
+
+    }
+
+    public void enableMovement()
+    {
+
+    }
+
 
 }
 

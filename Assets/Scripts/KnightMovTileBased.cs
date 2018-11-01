@@ -43,25 +43,25 @@ public class KnightMovTileBased : MonoBehaviour {
         //Initialize Stepcount to 0
         stepCount = 0;
 
-        
+
 
     }
 
     // Update is called once per frame
     void Update() {
-        
 
-        
+
+
         Vector3 currentPos = gameObject.transform.position;
         if (Input.GetKeyDown(KeyCode.W))
         {
-            if (blockDetection(Vector3.forward)){
+            if (blockDetection(Vector3.forward)) {
                 transform.forward = Vector3.forward;
                 pos += Vector3.forward;
                 UpdateSteps();
-                
+
             }
-            
+
         }
         else if (Input.GetKeyDown(KeyCode.S))
         {
@@ -90,11 +90,11 @@ public class KnightMovTileBased : MonoBehaviour {
                 pos += Vector3.right;
                 UpdateSteps();
             }
-            
+
         }
 
 
-        
+
         //Lerp from one location to the next
 
         if (Vector3.Distance(gameObject.transform.position, pos) > 0.2f && m_grounded)
@@ -102,7 +102,7 @@ public class KnightMovTileBased : MonoBehaviour {
             gameObject.transform.position = Vector3.Lerp(gameObject.transform.position, pos, 0.2f);
         }
 
-        
+
 
     }
 
@@ -119,7 +119,7 @@ public class KnightMovTileBased : MonoBehaviour {
                 m_grounded = true;
                 if (colliders[i].gameObject.tag == "elevator")
                 {
-                   // new Vector3(0.0f, colliders[i].transform.position.y, 0.0f);
+                    // new Vector3(0.0f, colliders[i].transform.position.y, 0.0f);
                     gameObject.transform.position = gameObject.transform.position + new Vector3(0.0f, colliders[i].transform.position.y, 0.0f);
                 }
 
@@ -131,7 +131,7 @@ public class KnightMovTileBased : MonoBehaviour {
             }
         }
 
-        if(m_grounded == false)
+        if (m_grounded == false)
         {
             //Debug.Log("Not on ground");
         }
@@ -157,7 +157,7 @@ public class KnightMovTileBased : MonoBehaviour {
                 transform.forward = Vector3.Lerp(transform.forward, Vector3.back, Time.deltaTime * 0.01f);
             }
         }
-        if(face == Vector3.left)
+        if (face == Vector3.left)
         {
             while (Vector3.Angle(transform.forward, Vector3.left) > 0.0f)
             {
@@ -183,9 +183,9 @@ public class KnightMovTileBased : MonoBehaviour {
             return true;
         }
         //If multiple objects are piled up
-        
-        
-        
+
+
+
 
         for (int i = 0; i < hit.Length; i++)
         {
@@ -194,11 +194,11 @@ public class KnightMovTileBased : MonoBehaviour {
             //Pushable block
             if (hit[i].collider.tag == "pushableBlock")
             {
-                
+
                 if (target == Vector3.forward)
                 {
                     RaycastHit[] hitCount = Physics.RaycastAll(gameObject.transform.position, target, 2.0f);
-                    if(hitCount.Length > 1)
+                    if (hitCount.Length > 1)
                     {
                         return false;
                     }
@@ -223,7 +223,7 @@ public class KnightMovTileBased : MonoBehaviour {
                     }
                     hit[i].transform.SendMessage("MoveLeft");
                 }
-                else if(target == Vector3.right)
+                else if (target == Vector3.right)
                 {
                     RaycastHit[] hitCount = Physics.RaycastAll(gameObject.transform.position, target, 2.0f);
                     if (hitCount.Length > 1)
@@ -236,7 +236,7 @@ public class KnightMovTileBased : MonoBehaviour {
                 return true;
             }
 
-            
+
         }
         return false;
     }
@@ -244,8 +244,18 @@ public class KnightMovTileBased : MonoBehaviour {
 
     private void UpdateSteps()
     {
-        //ABSTRACT
-        //m_gameManager.GetComponent<GameManager>().IncrementSteps();
+
+        m_gameManager.GetComponent<GameManager>().incrementSteps();
+    }
+
+    public void disableMovement()
+    {
+
+    }
+
+    public void enableMovement()
+    {
+
     }
 
 }
