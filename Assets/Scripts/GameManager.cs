@@ -15,6 +15,11 @@ public class GameManager : MonoBehaviour
 
     private Camera mainCamera;
 
+    private int steps = 0;
+
+    private int[] maxSteps = { 30, 30, 30, 30 };
+
+
     //Awake is always called before any Start functions
     void Awake()
     {
@@ -56,8 +61,11 @@ public class GameManager : MonoBehaviour
         //Spawn the goal and spawn tiles.
         levelLoader.goalAndSpawnTiles();
 
+        level = 1;
+
         //Call the SetupScene function of the BoardManager script, pass it current level number.
-        levelLoader.transitionToLevel(1);
+        levelLoader.transitionToLevel(level);
+        steps = 0;
 
         
 
@@ -69,7 +77,10 @@ public class GameManager : MonoBehaviour
 
         yield return new WaitForSeconds(10);
 
-        levelLoader.transitionToLevel(2);
+        level++;
+
+        levelLoader.transitionToLevel(level);
+        steps = 0;
 
         //levelLoader.LoadLevel(2);
 
@@ -81,6 +92,30 @@ public class GameManager : MonoBehaviour
     {
         Instantiate(playerId, new Vector3(x, y, z), transform.rotation);
         
+    }
+
+    public void incrementSteps()
+    {
+        steps++;
+        if (overStepCount(level))
+        {
+            GameOver();
+        }
+    }
+
+    private bool overStepCount(int level)
+    {
+        return steps > maxSteps[level - 1];
+    }
+
+    public int getSteps()
+    {
+        return steps;
+    }
+
+    private void GameOver()
+    {
+
     }
 
     //Update is called every frame.
