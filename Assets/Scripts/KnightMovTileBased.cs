@@ -22,7 +22,7 @@ public class KnightMovTileBased : MonoBehaviour {
 
     //Counter for the number of steps taken
     private int stepCount;
-
+    GameManager m_gameManager;
     Quaternion m_quaternion;
 
     // Use this for initialization
@@ -37,8 +37,13 @@ public class KnightMovTileBased : MonoBehaviour {
         playerPositionX = 0;
         playerPositionY = 0;
 
+
+        m_gameManager = GameObject.FindObjectOfType<GameManager>();
+
         //Initialize Stepcount to 0
         stepCount = 0;
+
+        
 
     }
 
@@ -53,9 +58,10 @@ public class KnightMovTileBased : MonoBehaviour {
             if (blockDetection(Vector3.forward)){
                 transform.forward = Vector3.forward;
                 pos += Vector3.forward;
-                stepCount++;
+                UpdateSteps();
+                
             }
-
+            
         }
         else if (Input.GetKeyDown(KeyCode.S))
         {
@@ -63,7 +69,7 @@ public class KnightMovTileBased : MonoBehaviour {
             {
                 transform.forward = Vector3.back;
                 pos += Vector3.back;
-                stepCount++;
+                UpdateSteps();
             }
             //gameObject.transform.position = pos;
         }
@@ -73,7 +79,7 @@ public class KnightMovTileBased : MonoBehaviour {
             {
                 transform.forward = Vector3.left;
                 pos += Vector3.left;
-                stepCount++;
+                UpdateSteps();
             }
         }
         else if (Input.GetKeyDown(KeyCode.D))
@@ -82,7 +88,7 @@ public class KnightMovTileBased : MonoBehaviour {
             {
                 transform.forward = Vector3.right;
                 pos += Vector3.right;
-                stepCount++;
+                UpdateSteps();
             }
             
         }
@@ -236,10 +242,10 @@ public class KnightMovTileBased : MonoBehaviour {
     }
 
 
-    public int getSteps()
+    private void UpdateSteps()
     {
-        
-        return stepCount;
+        //ABSTRACT
+        //m_gameManager.GetComponent<GameManager>().IncrementSteps();
     }
 
 }

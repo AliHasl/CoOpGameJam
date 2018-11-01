@@ -57,7 +57,7 @@ public class GhostMovTileBased : MonoBehaviour
             {
                 transform.forward = Vector3.forward;
                 pos += Vector3.forward;
-                stepCount++;
+                UpdateSteps();
             }
 
         }
@@ -67,7 +67,7 @@ public class GhostMovTileBased : MonoBehaviour
             {
                 transform.forward = Vector3.back;
                 pos += Vector3.back;
-                stepCount++;
+                UpdateSteps();
             }
             //gameObject.transform.position = pos;
         }
@@ -77,7 +77,7 @@ public class GhostMovTileBased : MonoBehaviour
             {
                 transform.forward = Vector3.left;
                 pos += Vector3.left;
-                stepCount++;
+                UpdateSteps();
             }
         }
         else if (Input.GetKeyDown(KeyCode.RightArrow))
@@ -86,7 +86,7 @@ public class GhostMovTileBased : MonoBehaviour
             {
                 transform.forward = Vector3.right;
                 pos += Vector3.right;
-                stepCount++;
+                UpdateSteps();
             }
 
         }
@@ -238,6 +238,12 @@ public class GhostMovTileBased : MonoBehaviour
     {
         Debug.Log("accessed");
         return stepCount;
+    }
+
+    private void UpdateSteps()
+    {
+        //ABSTRACT
+        //m_gameManager.GetComponent<GameManager>().IncrementSteps();
     }
 
 }
